@@ -1,0 +1,12 @@
+<h3>Nijmegen Goffert → Oss</h3>
+<div id="out">Loading…</div>
+
+<script>
+fetch("https://ns-proxy.yourname.workers.dev")
+  .then(r => r.json())
+  .then(d => {
+    const leg = d.trips[0].legs[0];
+    document.getElementById("out").innerText =
+      `${leg.origin.actualDateTime.slice(11,16)} — delay ${leg.origin.delayInMinutes ?? 0} min`;
+  });
+</script>
