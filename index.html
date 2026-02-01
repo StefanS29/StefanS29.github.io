@@ -1,12 +1,15 @@
-<h3>Nijmegen Goffert → Oss</h3>
-<div id="out">Loading…</div>
-
 <script>
-fetch("https://ns-proxy.yourname.workers.dev")
-  .then(r => r.json())
-  .then(d => {
-    const leg = d.trips[0].legs[0];
-    document.getElementById("out").innerText =
-      `${leg.origin.actualDateTime.slice(11,16)} — delay ${leg.origin.delayInMinutes ?? 0} min`;
-  });
+const OUT = document.getElementById("out");
+const URL = "PASTE_YOUR_WORKER_URL_HERE";
+
+fetch(URL)
+  .then(async r => {
+    const text = await r.text();
+    OUT.innerText = `HTTP ${r.status}\n\n${text.slice(0, 800)}`;
+    // Try JSON parse just to see if it’s valid JSON:
+    try { JSON.parse(text); OUT.innerText += "\n\n(JSON parse: OK)"; }
+    catch(e) { OUT.innerText += `\n\n(JSON parse error: ${e})`; }
+  })
+  .catch(e => OUT.innerText = `Fetch error:\n${e}`);
 </script>
+
